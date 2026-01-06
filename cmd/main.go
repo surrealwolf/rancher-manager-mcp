@@ -31,8 +31,9 @@ func main() {
 	if *rancherToken == "" {
 		*rancherToken = os.Getenv("RANCHER_TOKEN")
 	}
+	// Check environment variable for SSL verification (flag takes precedence)
 	if !*insecureSkipVerify {
-		if os.Getenv("RANCHER_INSECURE_SKIP_VERIFY") == "true" {
+		if os.Getenv("RANCHER_INSECURE_SKIP_VERIFY") == "true" || os.Getenv("RANCHER_INSECURE_SKIP_VERIFY") == "1" {
 			*insecureSkipVerify = true
 		}
 	}

@@ -76,7 +76,7 @@ func (s *Server) handleMCPRequest(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	status := map[string]interface{}{
-		"status": "ok",
+		"status":             "ok",
 		"rancher_configured": s.client != nil,
 	}
 	json.NewEncoder(w).Encode(status)

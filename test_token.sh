@@ -6,9 +6,9 @@
 
 TOKEN="${RANCHER_TOKEN:-}"
 
-# Check for --insecure flag
+# Check for --insecure flag or environment variable
 INSECURE=false
-if [ "$1" = "--insecure" ] || [ "${RANCHER_INSECURE_SKIP_VERIFY}" = "true" ]; then
+if [ "$1" = "--insecure" ] || [ "${RANCHER_INSECURE_SKIP_VERIFY}" = "true" ] || [ "${RANCHER_INSECURE_SKIP_VERIFY}" = "1" ]; then
   INSECURE=true
 fi
 
