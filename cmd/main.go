@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -57,9 +58,12 @@ func main() {
 
 	switch *transport {
 	case "stdio":
-		logrus.Info("Starting MCP server with stdio transport")
+		// Don't log to stderr in stdio mode - it interferes with MCP protocol
+		// logrus.Info("Starting MCP server with stdio transport")
 		if err := srv.ServeStdio(ctx); err != nil {
-			logrus.Fatalf("Failed to serve stdio: %v", err)
+			// Use os.Stderr directly for fatal errors only
+			fmt.Fprintf(os.Stderr, "Fatal error: %v\n", err)
+			os.Exit(1)
 		}
 	case "http":
 		logrus.Infof("Starting MCP server with HTTP transport on %s", *httpAddr)
