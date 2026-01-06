@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "rancher-manager": {
+      "command": "/absolute/path/to/rancher-manager-mcp/bin/rancher-mcp",
+      "args": ["--transport", "stdio"],
+      "env": {
+        "RANCHER_URL": "https://your-rancher-server",
+        "RANCHER_TOKEN": "token-XXXXX:YYYYY",
+        "RANCHER_INSECURE_SKIP_VERIFY": "false"
+      }
+    }
+  }
+}
