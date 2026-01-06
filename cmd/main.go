@@ -15,11 +15,11 @@ import (
 
 func main() {
 	var (
-		transport     = flag.String("transport", "stdio", "Transport type: stdio or http")
-		httpAddr      = flag.String("http-addr", ":8080", "HTTP server address (for http transport)")
-		rancherURL    = flag.String("rancher-url", "", "Rancher Manager API URL")
-		rancherToken  = flag.String("rancher-token", "", "Rancher API token")
-		logLevel      = flag.String("log-level", "info", "Log level: debug, info, warn, error")
+		transport    = flag.String("transport", "stdio", "Transport type: stdio or http")
+		httpAddr     = flag.String("http-addr", ":8080", "HTTP server address (for http transport)")
+		rancherURL   = flag.String("rancher-url", "", "Rancher Manager API URL")
+		rancherToken = flag.String("rancher-token", "", "Rancher API token")
+		logLevel     = flag.String("log-level", "info", "Log level: debug, info, warn, error")
 	)
 	flag.Parse()
 

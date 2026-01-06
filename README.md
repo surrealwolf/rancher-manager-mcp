@@ -38,10 +38,17 @@ go build -o rancher-mcp ./cmd
 ### Verify Token
 
 ```bash
-go run ./cmd/verify_token.go \
+# Using the Go tool
+go run ./cmd/verify-token/main.go \
   --rancher-url https://your-rancher-server \
-  --rancher-token token-lk4pv:your-token
+  --rancher-token YOUR_TOKEN_HERE
+
+# Or using the shell script
+export RANCHER_URL=https://your-rancher-server
+./test_token.sh
 ```
+
+See [VERIFY_TOKEN.md](VERIFY_TOKEN.md) for more details.
 
 ## Available Tools
 
