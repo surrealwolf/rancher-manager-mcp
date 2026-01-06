@@ -18,7 +18,7 @@ type Server struct {
 	mcpServer    *mcp.Server
 }
 
-func NewServer(rancherURL, rancherToken string) *Server {
+func NewServer(rancherURL, rancherToken string, insecureSkipVerify bool) *Server {
 	s := &Server{
 		rancherURL:   rancherURL,
 		rancherToken: rancherToken,
@@ -26,7 +26,7 @@ func NewServer(rancherURL, rancherToken string) *Server {
 
 	// Initialize Rancher client
 	if rancherURL != "" && rancherToken != "" {
-		s.client = NewRancherClient(rancherURL, rancherToken)
+		s.client = NewRancherClient(rancherURL, rancherToken, insecureSkipVerify)
 	}
 
 	// Initialize MCP server

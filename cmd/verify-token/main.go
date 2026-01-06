@@ -12,8 +12,9 @@ import (
 
 func main() {
 	var (
-		rancherURL   = flag.String("rancher-url", "", "Rancher Manager API URL (required)")
-		rancherToken = flag.String("rancher-token", "", "Rancher API token (required)")
+		rancherURL         = flag.String("rancher-url", "", "Rancher Manager API URL (required)")
+		rancherToken       = flag.String("rancher-token", "", "Rancher API token (required)")
+		insecureSkipVerify = flag.Bool("insecure-skip-verify", false, "Skip SSL certificate verification (not recommended)")
 	)
 	flag.Parse()
 
@@ -23,7 +24,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	client := server.NewRancherClient(*rancherURL, *rancherToken)
+	// Check environment variable
+	if !*insecureSkipVerify && os.Getenv("RANCHER_INSECURE_SKIP_VERIFY") == "true" {
+		*insecureSkipVerify = true
+	}
+
+	client := server.NewRancherClient(*rancherURL, *rancherToken, *insecureSkipVerify)
 	ctx := context.Background()
 
 	logrus.Infof("Verifying token against Rancher at %s", *rancherURL)

@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -18,12 +19,19 @@ type RancherClient struct {
 	httpClient *http.Client
 }
 
-func NewRancherClient(baseURL, token string) *RancherClient {
+func NewRancherClient(baseURL, token string, insecureSkipVerify bool) *RancherClient {
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: insecureSkipVerify,
+		},
+	}
+
 	return &RancherClient{
 		baseURL: baseURL,
 		token:   token,
 		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
+			Timeout:   30 * time.Second,
+			Transport: transport,
 		},
 	}
 }

@@ -15,11 +15,12 @@ import (
 
 func main() {
 	var (
-		transport    = flag.String("transport", "stdio", "Transport type: stdio or http")
-		httpAddr     = flag.String("http-addr", ":8080", "HTTP server address (for http transport)")
-		rancherURL   = flag.String("rancher-url", "", "Rancher Manager API URL")
-		rancherToken = flag.String("rancher-token", "", "Rancher API token")
-		logLevel     = flag.String("log-level", "info", "Log level: debug, info, warn, error")
+		transport          = flag.String("transport", "stdio", "Transport type: stdio or http")
+		httpAddr           = flag.String("http-addr", ":8080", "HTTP server address (for http transport)")
+		rancherURL         = flag.String("rancher-url", "", "Rancher Manager API URL")
+		rancherToken       = flag.String("rancher-token", "", "Rancher API token")
+		insecureSkipVerify = flag.Bool("insecure-skip-verify", false, "Skip SSL certificate verification (not recommended)")
+		logLevel           = flag.String("log-level", "info", "Log level: debug, info, warn, error")
 	)
 	flag.Parse()
 
@@ -30,6 +31,11 @@ func main() {
 	if *rancherToken == "" {
 		*rancherToken = os.Getenv("RANCHER_TOKEN")
 	}
+	if !*insecureSkipVerify {
+		if os.Getenv("RANCHER_INSECURE_SKIP_VERIFY") == "true" {
+			*insecureSkipVerify = true
+		}
+	}
 
 	// Set log level
 	level, err := logrus.ParseLevel(*logLevel)
@@ -39,7 +45,7 @@ func main() {
 	logrus.SetLevel(level)
 
 	// Create server
-	srv := server.NewServer(*rancherURL, *rancherToken)
+	srv := server.NewServer(*rancherURL, *rancherToken, *insecureSkipVerify)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
