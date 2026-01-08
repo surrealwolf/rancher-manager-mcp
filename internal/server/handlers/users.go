@@ -11,7 +11,7 @@ import (
 // RegisterUserTools registers all user management tools
 func RegisterUserTools(mcpServer *mcp.Server, rancherClient *client.RancherClient) {
 	mcpServer.RegisterToolWithSchema("list_users", "List all Rancher users", map[string]interface{}{
-		"type": "object",
+		"type":       "object",
 		"properties": map[string]interface{}{},
 	}, func(ctx context.Context, args map[string]interface{}) (interface{}, error) {
 		return listUsers(ctx, args, rancherClient)

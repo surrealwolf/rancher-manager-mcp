@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 	"github.com/rancher/rancher-manager-mcp/internal/client"
+	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 )
 
 // RegisterGlobalRoleTools registers all global role management tools
 func RegisterGlobalRoleTools(mcpServer *mcp.Server, rancherClient *client.RancherClient) {
 	mcpServer.RegisterToolWithSchema("list_global_roles", "List all global roles", map[string]interface{}{
-		"type": "object",
+		"type":       "object",
 		"properties": map[string]interface{}{},
 	}, func(ctx context.Context, args map[string]interface{}) (interface{}, error) {
 		return listGlobalRoles(ctx, args, rancherClient)

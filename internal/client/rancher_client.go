@@ -42,7 +42,7 @@ func NewRancherClient(baseURL, token string, insecureSkipVerify bool) *RancherCl
 
 func (c *RancherClient) doRequest(ctx context.Context, method, path string, body interface{}) ([]byte, error) {
 	url := fmt.Sprintf("%s%s", c.baseURL, path)
-	
+
 	var reqBody io.Reader
 	if body != nil {
 		jsonData, err := json.Marshal(body)
@@ -161,7 +161,7 @@ func (c *RancherClient) GetProject(ctx context.Context, name, namespace string) 
 	if namespace != "" {
 		path = fmt.Sprintf("/apis/management.cattle.io/v3/namespaces/%s/projects/%s", namespace, name)
 	}
-	
+
 	data, err := c.doRequest(ctx, "GET", path, nil)
 	if err != nil {
 		return nil, err
@@ -327,18 +327,18 @@ func (c *RancherClient) getStatusFromResource(ctx context.Context, getFunc func(
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Convert to map to extract status field
 	resourceMap, ok := resource.(map[string]interface{})
 	if !ok {
 		return nil, fmt.Errorf("failed to convert resource to map")
 	}
-	
+
 	status, exists := resourceMap["status"]
 	if !exists {
 		return nil, fmt.Errorf("status field not found in resource")
 	}
-	
+
 	return status, nil
 }
 
@@ -432,7 +432,7 @@ func (c *RancherClient) updateResource(ctx context.Context, apiPath string, body
 
 func (c *RancherClient) patchResource(ctx context.Context, apiPath string, body interface{}) (interface{}, error) {
 	url := fmt.Sprintf("%s%s", c.baseURL, apiPath)
-	
+
 	jsonData, err := json.Marshal(body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request body: %w", err)

@@ -258,35 +258,76 @@ services:
 
 ## Development
 
+### Using Make
+
+The project includes a `Makefile` with common development tasks:
+
+```bash
+# Show all available commands
+make help
+
+# Build all binaries
+make build-all
+
+# Run tests
+make test
+
+# Run integration tests (requires RANCHER_URL and RANCHER_TOKEN)
+make test-integration
+
+# Run linters
+make lint
+
+# Build Docker image
+make docker-build
+
+# Clean build artifacts
+make clean
+```
+
 ### Build
 ```bash
 go build -o bin/rancher-mcp ./cmd
 ```
 
+Or using Make:
+```bash
+make build
+```
+
 ### Testing
 
-**Test all tools with existing resources:**
+The project includes comprehensive Go tests for the Rancher client. Tests are integration tests that require a live Rancher instance.
+
+**Prerequisites:**
+Set environment variables for your Rancher instance:
 ```bash
-source .env
-./test_all_tools.sh
+export RANCHER_URL=https://your-rancher-server
+export RANCHER_TOKEN=token-XXXXX:YYYYY
+export RANCHER_INSECURE_SKIP_VERIFY=false  # Optional: set to true for self-signed certs
 ```
 
-**Test all tools with test objects (full CRUD workflow):**
+**Run all tests:**
 ```bash
-source .env
-./test_all_tools_with_objects.sh
+go test ./internal/client/... -v
 ```
 
-This comprehensive test script:
-- Creates test objects
-- Tests all CRUD operations
-- Verifies status operations
-- Cleans up test objects
-
-### Run Tests
+**Run specific test suites:**
 ```bash
-go test ./...
+# Test list/get operations with existing resources
+go test ./internal/client/... -v -run TestList
+
+# Test CRUD operations (creates test objects, tests operations, then cleans up)
+go test ./internal/client/... -v -run TestCRUD
 ```
+
+**Test coverage:**
+```bash
+go test ./internal/client/... -coverprofile=coverage.out
+go tool cover -html=coverage.out
+```
+
+**Note:** Tests will be skipped if `RANCHER_URL` and `RANCHER_TOKEN` are not set, making them safe to run in CI/CD pipelines without credentials.
 
 ## Project Structure
 
@@ -315,8 +356,6 @@ rancher-manager-mcp/
 │   └── api-reference/       # API reference documentation
 ├── bin/                     # Build output (git-ignored)
 ├── .env.example            # Environment configuration template
-├── test_all_tools.sh        # Test script for all tools
-├── test_all_tools_with_objects.sh  # Full CRUD test script
 └── README.md               # This file
 ```
 

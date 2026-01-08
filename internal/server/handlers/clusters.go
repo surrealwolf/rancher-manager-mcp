@@ -11,7 +11,7 @@ import (
 // RegisterClusterTools registers all cluster management tools
 func RegisterClusterTools(mcpServer *mcp.Server, rancherClient *client.RancherClient) {
 	mcpServer.RegisterToolWithSchema("list_clusters", "List all Rancher clusters", map[string]interface{}{
-		"type": "object",
+		"type":       "object",
 		"properties": map[string]interface{}{},
 	}, func(ctx context.Context, args map[string]interface{}) (interface{}, error) {
 		return listClusters(ctx, args, rancherClient)

@@ -43,11 +43,19 @@ jobs:
           tar czf rancher-mcp-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz rancher-mcp
           cd ..
 
+      - name: Install zip (if needed)
+        if: matrix.goos == 'windows'
+        run: |
+          if ! command -v zip >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y zip
+          fi
+
       - name: Create zip (Windows)
         if: matrix.goos == 'windows'
         run: |
           cd dist
-          7z a rancher-mcp-${{ matrix.goos }}-${{ matrix.goarch }}.zip rancher-mcp.exe
+          zip rancher-mcp-${{ matrix.goos }}-${{ matrix.goarch }}.zip rancher-mcp.exe
           cd ..
 
       - name: Upload artifacts

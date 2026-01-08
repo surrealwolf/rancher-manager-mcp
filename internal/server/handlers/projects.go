@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 	"github.com/rancher/rancher-manager-mcp/internal/client"
+	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 )
 
 // RegisterProjectTools registers all project management tools

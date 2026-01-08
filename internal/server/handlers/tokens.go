@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 	"github.com/rancher/rancher-manager-mcp/internal/client"
+	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 )
 
 // RegisterTokenTools registers all token management tools
 func RegisterTokenTools(mcpServer *mcp.Server, rancherClient *client.RancherClient) {
 	mcpServer.RegisterToolWithSchema("list_tokens", "List all API tokens", map[string]interface{}{
-		"type": "object",
+		"type":       "object",
 		"properties": map[string]interface{}{},
 	}, func(ctx context.Context, args map[string]interface{}) (interface{}, error) {
 		return listTokens(ctx, args, rancherClient)

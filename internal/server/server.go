@@ -97,7 +97,7 @@ func (s *Server) registerTools() {
 	handlers.RegisterRoleTemplateTools(s.mcpServer, s.client)
 	handlers.RegisterClusterRoleTemplateBindingTools(s.mcpServer, s.client)
 	handlers.RegisterProjectRoleTemplateBindingTools(s.mcpServer, s.client)
-	
+
 	// Register status tools
 	handlers.RegisterClusterStatusTools(s.mcpServer, s.client)
 	handlers.RegisterUserStatusTools(s.mcpServer, s.client)
@@ -105,7 +105,7 @@ func (s *Server) registerTools() {
 	handlers.RegisterRoleStatusTools(s.mcpServer, s.client)
 	handlers.RegisterBindingStatusTools(s.mcpServer, s.client)
 	handlers.RegisterAuditPolicyStatusTools(s.mcpServer, s.client)
-	
+
 	// Register create and update tools
 	handlers.RegisterClusterCreateUpdateTools(s.mcpServer, s.client)
 	handlers.RegisterUserCreateUpdateTools(s.mcpServer, s.client)
@@ -118,7 +118,7 @@ func (s *Server) registerTools() {
 	handlers.RegisterRoleTemplateCreateUpdateTools(s.mcpServer, s.client)
 	handlers.RegisterClusterRoleTemplateBindingCreateUpdateTools(s.mcpServer, s.client)
 	handlers.RegisterProjectRoleTemplateBindingCreateUpdateTools(s.mcpServer, s.client)
-	
+
 	// Register delete tools
 	handlers.RegisterClusterDeleteTools(s.mcpServer, s.client)
 	handlers.RegisterUserDeleteTools(s.mcpServer, s.client)

@@ -11,11 +11,11 @@ import (
 type ToolHandler func(ctx context.Context, args map[string]interface{}) (interface{}, error)
 
 type Server struct {
-	name        string
-	version     string
-	tools       map[string]Tool
+	name         string
+	version      string
+	tools        map[string]Tool
 	toolHandlers map[string]ToolHandler
-	mu          sync.RWMutex
+	mu           sync.RWMutex
 }
 
 func NewServer(name, version string) *Server {

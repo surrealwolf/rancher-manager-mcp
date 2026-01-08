@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 	"github.com/rancher/rancher-manager-mcp/internal/client"
+	"github.com/rancher/rancher-manager-mcp/internal/mcp"
 )
 
 // RegisterRoleTemplateTools registers all role template management tools
 func RegisterRoleTemplateTools(mcpServer *mcp.Server, rancherClient *client.RancherClient) {
 	mcpServer.RegisterToolWithSchema("list_role_templates", "List all role templates", map[string]interface{}{
-		"type": "object",
+		"type":       "object",
 		"properties": map[string]interface{}{},
 	}, func(ctx context.Context, args map[string]interface{}) (interface{}, error) {
 		return listRoleTemplates(ctx, args, rancherClient)

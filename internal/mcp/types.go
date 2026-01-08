@@ -9,15 +9,15 @@ type JSONRPCRequest struct {
 }
 
 type JSONRPCResponse struct {
-	JSONRPC string      `json:"jsonrpc"`
-	ID      interface{} `json:"id"` // Required for responses (not omitempty)
-	Result  interface{} `json:"result,omitempty"`
+	JSONRPC string        `json:"jsonrpc"`
+	ID      interface{}   `json:"id"` // Required for responses (not omitempty)
+	Result  interface{}   `json:"result,omitempty"`
 	Error   *JSONRPCError `json:"error,omitempty"`
 }
 
 type JSONRPCError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
@@ -34,9 +34,9 @@ type ClientInfo struct {
 }
 
 type InitializeResponse struct {
-	ProtocolVersion string                 `json:"protocolVersion"`
-	Capabilities    ServerCapabilities     `json:"capabilities"`
-	ServerInfo      ServerInfo             `json:"serverInfo"`
+	ProtocolVersion string             `json:"protocolVersion"`
+	Capabilities    ServerCapabilities `json:"capabilities"`
+	ServerInfo      ServerInfo         `json:"serverInfo"`
 }
 
 type ServerCapabilities struct {
