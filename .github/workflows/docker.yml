@@ -24,6 +24,7 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: rancher-mcp:latest,rancher-mcp:${{ github.sha }},rancher-mcp:test
+          load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
