@@ -126,9 +126,10 @@ Get detailed information about a specific user.
 
 ### list_projects
 
-List all Rancher projects across all namespaces.
+List all Rancher projects across all namespaces or filter by namespace.
 
-**Parameters**: None
+**Parameters**:
+- `namespace` (string, optional) - Optional namespace to filter projects
 
 **Returns**: JSON object containing project list
 
@@ -183,6 +184,146 @@ Get detailed information about a specific project.
 - Cluster assignments
 - Member access
 
+## Audit Policy Management (auditlogCattleIo_v1)
+
+### list_audit_policies
+
+List all audit policies.
+
+**Parameters**: None
+
+**Returns**: JSON object containing audit policy list
+
+### get_audit_policy
+
+Get detailed information about a specific audit policy.
+
+**Parameters**:
+- `name` (string, required) - The name of the audit policy
+
+## Kubeconfig Management (extCattleIo_v1)
+
+### list_kubeconfigs
+
+List all kubeconfigs.
+
+**Parameters**: None
+
+**Returns**: JSON object containing kubeconfig list
+
+### get_kubeconfig
+
+Get detailed information about a specific kubeconfig.
+
+**Parameters**:
+- `name` (string, required) - The name of the kubeconfig
+
+## Token Management (extCattleIo_v1)
+
+### list_tokens
+
+List all API tokens.
+
+**Parameters**: None
+
+**Returns**: JSON object containing token list
+
+### get_token
+
+Get detailed information about a specific API token.
+
+**Parameters**:
+- `name` (string, required) - The name of the token
+
+## Global Role Management (managementCattleIo_v3)
+
+### list_global_roles
+
+List all global roles.
+
+**Parameters**: None
+
+**Returns**: JSON object containing global role list
+
+### get_global_role
+
+Get detailed information about a specific global role.
+
+**Parameters**:
+- `name` (string, required) - The name of the global role
+
+## Global Role Binding Management (managementCattleIo_v3)
+
+### list_global_role_bindings
+
+List all global role bindings.
+
+**Parameters**: None
+
+**Returns**: JSON object containing global role binding list
+
+### get_global_role_binding
+
+Get detailed information about a specific global role binding.
+
+**Parameters**:
+- `name` (string, required) - The name of the global role binding
+
+## Role Template Management (managementCattleIo_v3)
+
+### list_role_templates
+
+List all role templates.
+
+**Parameters**: None
+
+**Returns**: JSON object containing role template list
+
+### get_role_template
+
+Get detailed information about a specific role template.
+
+**Parameters**:
+- `name` (string, required) - The name of the role template
+
+## Cluster Role Template Binding Management (managementCattleIo_v3)
+
+### list_cluster_role_template_bindings
+
+List all cluster role template bindings, optionally filtered by namespace.
+
+**Parameters**:
+- `namespace` (string, optional) - Optional namespace to filter cluster role template bindings
+
+**Returns**: JSON object containing cluster role template binding list
+
+### get_cluster_role_template_binding
+
+Get detailed information about a specific cluster role template binding.
+
+**Parameters**:
+- `name` (string, required) - The name of the cluster role template binding
+- `namespace` (string, optional) - Optional namespace of the cluster role template binding
+
+## Project Role Template Binding Management (managementCattleIo_v3)
+
+### list_project_role_template_bindings
+
+List all project role template bindings, optionally filtered by namespace.
+
+**Parameters**:
+- `namespace` (string, optional) - Optional namespace to filter project role template bindings
+
+**Returns**: JSON object containing project role template binding list
+
+### get_project_role_template_binding
+
+Get detailed information about a specific project role template binding.
+
+**Parameters**:
+- `name` (string, required) - The name of the project role template binding
+- `namespace` (string, optional) - Optional namespace of the project role template binding
+
 ## Error Handling
 
 All tools return errors in the following format:
@@ -213,12 +354,26 @@ Common error scenarios:
 
 All tools use the Rancher Manager Kubernetes API:
 
+### managementCattleIo_v3
 - **Clusters**: `/apis/management.cattle.io/v3/clusters`
 - **Users**: `/apis/management.cattle.io/v3/users`
 - **Projects**: `/apis/management.cattle.io/v3/projects`
+- **GlobalRoles**: `/apis/management.cattle.io/v3/globalroles`
+- **GlobalRoleBindings**: `/apis/management.cattle.io/v3/globalrolebindings`
+- **RoleTemplates**: `/apis/management.cattle.io/v3/roletemplates`
+- **ClusterRoleTemplateBindings**: `/apis/management.cattle.io/v3/clusterroletemplatebindings`
+- **ProjectRoleTemplateBindings**: `/apis/management.cattle.io/v3/projectroletemplatebindings`
+
+### extCattleIo_v1
+- **Kubeconfigs**: `/apis/ext.cattle.io/v1/kubeconfigs`
+- **Tokens**: `/apis/ext.cattle.io/v1/tokens`
+
+### auditlogCattleIo_v1
+- **AuditPolicies**: `/apis/auditlog.cattle.io/v1/auditpolicies`
 
 For detailed API documentation, see:
-https://ranchermanager.docs.rancher.com/api/api-reference
+- https://ranchermanager.docs.rancher.com/api/api-reference
+- `docs/api-reference/ENDPOINTS.md` (local reference)
 
 ## Usage Examples
 

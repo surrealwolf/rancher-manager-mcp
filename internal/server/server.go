@@ -8,13 +8,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/rancher/rancher-manager-mcp/internal/client"
 	"github.com/rancher/rancher-manager-mcp/internal/mcp"
+	"github.com/rancher/rancher-manager-mcp/internal/server/handlers"
 )
 
 type Server struct {
 	rancherURL   string
 	rancherToken string
-	client       *RancherClient
+	client       *client.RancherClient
 	mcpServer    *mcp.Server
 }
 
@@ -26,7 +28,7 @@ func NewServer(rancherURL, rancherToken string, insecureSkipVerify bool) *Server
 
 	// Initialize Rancher client
 	if rancherURL != "" && rancherToken != "" {
-		s.client = NewRancherClient(rancherURL, rancherToken, insecureSkipVerify)
+		s.client = client.NewRancherClient(rancherURL, rancherToken, insecureSkipVerify)
 	}
 
 	// Initialize MCP server
@@ -83,81 +85,54 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) registerTools() {
-	// List clusters
-	s.mcpServer.RegisterTool("list_clusters", "List all Rancher clusters", s.listClusters)
-
-	// Get cluster details
-	s.mcpServer.RegisterTool("get_cluster", "Get details of a specific cluster", s.getCluster)
-
-	// List users
-	s.mcpServer.RegisterTool("list_users", "List all Rancher users", s.listUsers)
-
-	// Get user details
-	s.mcpServer.RegisterTool("get_user", "Get details of a specific user", s.getUser)
-
-	// List projects
-	s.mcpServer.RegisterTool("list_projects", "List all Rancher projects", s.listProjects)
-
-	// Get project details
-	s.mcpServer.RegisterTool("get_project", "Get details of a specific project", s.getProject)
+	// Register tools from handler modules
+	handlers.RegisterClusterTools(s.mcpServer, s.client)
+	handlers.RegisterUserTools(s.mcpServer, s.client)
+	handlers.RegisterProjectTools(s.mcpServer, s.client)
+	handlers.RegisterAuditPolicyTools(s.mcpServer, s.client)
+	handlers.RegisterKubeconfigTools(s.mcpServer, s.client)
+	handlers.RegisterTokenTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleBindingTools(s.mcpServer, s.client)
+	handlers.RegisterRoleTemplateTools(s.mcpServer, s.client)
+	handlers.RegisterClusterRoleTemplateBindingTools(s.mcpServer, s.client)
+	handlers.RegisterProjectRoleTemplateBindingTools(s.mcpServer, s.client)
+	
+	// Register status tools
+	handlers.RegisterClusterStatusTools(s.mcpServer, s.client)
+	handlers.RegisterUserStatusTools(s.mcpServer, s.client)
+	handlers.RegisterProjectStatusTools(s.mcpServer, s.client)
+	handlers.RegisterRoleStatusTools(s.mcpServer, s.client)
+	handlers.RegisterBindingStatusTools(s.mcpServer, s.client)
+	handlers.RegisterAuditPolicyStatusTools(s.mcpServer, s.client)
+	
+	// Register create and update tools
+	handlers.RegisterClusterCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterUserCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterProjectCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterAuditPolicyCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterKubeconfigCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterTokenCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleBindingCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterRoleTemplateCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterClusterRoleTemplateBindingCreateUpdateTools(s.mcpServer, s.client)
+	handlers.RegisterProjectRoleTemplateBindingCreateUpdateTools(s.mcpServer, s.client)
+	
+	// Register delete tools
+	handlers.RegisterClusterDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterUserDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterProjectDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterAuditPolicyDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterKubeconfigDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterTokenDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterGlobalRoleBindingDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterRoleTemplateDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterClusterRoleTemplateBindingDeleteTools(s.mcpServer, s.client)
+	handlers.RegisterProjectRoleTemplateBindingDeleteTools(s.mcpServer, s.client)
 }
 
 func (s *Server) registerResources() {
 	// Register resources if needed
-}
-
-// Tool handlers
-func (s *Server) listClusters(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	return s.client.ListClusters(ctx)
-}
-
-func (s *Server) getCluster(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	name, ok := args["name"].(string)
-	if !ok {
-		return nil, fmt.Errorf("name parameter is required")
-	}
-	return s.client.GetCluster(ctx, name)
-}
-
-func (s *Server) listUsers(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	return s.client.ListUsers(ctx)
-}
-
-func (s *Server) getUser(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	name, ok := args["name"].(string)
-	if !ok {
-		return nil, fmt.Errorf("name parameter is required")
-	}
-	return s.client.GetUser(ctx, name)
-}
-
-func (s *Server) listProjects(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	return s.client.ListProjects(ctx)
-}
-
-func (s *Server) getProject(ctx context.Context, args map[string]interface{}) (interface{}, error) {
-	if s.client == nil {
-		return nil, fmt.Errorf("Rancher client not configured")
-	}
-	name, ok := args["name"].(string)
-	if !ok {
-		return nil, fmt.Errorf("name parameter is required")
-	}
-	namespace, _ := args["namespace"].(string)
-	return s.client.GetProject(ctx, name, namespace)
 }

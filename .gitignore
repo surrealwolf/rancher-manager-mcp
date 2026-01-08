@@ -1,12 +1,12 @@
 # Binaries
+bin/
 rancher-mcp
 rancher-mcp.exe
 dist/
 *.exe
 
 # Go
-*.mod
-*.sum
+# Note: go.mod and go.sum should be tracked - don't ignore them
 vendor/
 
 # IDE

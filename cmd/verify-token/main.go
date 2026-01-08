@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/rancher-manager-mcp/internal/server"
+	"github.com/rancher/rancher-manager-mcp/internal/client"
 	"github.com/sirupsen/logrus"
 )
 
@@ -31,11 +31,11 @@ func main() {
 		}
 	}
 
-	client := server.NewRancherClient(*rancherURL, *rancherToken, *insecureSkipVerify)
+	rancherClient := client.NewRancherClient(*rancherURL, *rancherToken, *insecureSkipVerify)
 	ctx := context.Background()
 
 	logrus.Infof("Verifying token against Rancher at %s", *rancherURL)
-	if err := client.VerifyToken(ctx); err != nil {
+	if err := rancherClient.VerifyToken(ctx); err != nil {
 		logrus.Fatalf("Token verification failed: %v", err)
 	}
 

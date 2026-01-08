@@ -4,11 +4,15 @@ Model Context Protocol (MCP) server for Rancher Manager API. Control and monitor
 
 ## Features
 
+- **75 MCP Tools**: Comprehensive coverage of all Rancher Manager operations
+- **Full CRUD Support**: Create, Read, Update, Patch, and Delete operations for all resources
 - **Dual Transport Support**: Works with both stdio (for CLI tools) and HTTP (for web services)
 - **Rancher API Integration**: Full integration with Rancher Manager Kubernetes API
-- **Tool-based Interface**: Exposes Rancher operations as MCP tools
+- **Status Operations**: Get status information from all resource types
+- **Namespace Support**: Handles both namespaced and cluster-scoped resources
 - **SSL Verification Control**: Configurable SSL certificate verification
 - **Environment-based Configuration**: Secure credential management via `.env` files
+- **Comprehensive Testing**: Test scripts verify all tools with actual Rancher objects
 
 ## Quick Start
 
@@ -54,19 +58,108 @@ source .env
 
 ## Available Tools
 
-### Cluster Management (2 tools)
+This MCP server provides **75 tools** covering all Rancher Manager operations:
+
+### Cluster Management (9 tools)
 * `list_clusters` - List all Rancher clusters
-* `get_cluster` - Get details of a specific cluster (requires `name` parameter)
+* `get_cluster` - Get details of a specific cluster
+* `create_cluster` - Create a new cluster
+* `update_cluster` - Update/replace a cluster
+* `patch_cluster` - Partially update a cluster
+* `delete_cluster` - Delete a cluster
+* `get_cluster_status` - Get cluster status
 
-### User Management (2 tools)
+### User Management (8 tools)
 * `list_users` - List all Rancher users
-* `get_user` - Get details of a specific user (requires `name` parameter)
+* `get_user` - Get details of a specific user
+* `create_user` - Create a new user
+* `update_user` - Update/replace a user
+* `patch_user` - Partially update a user
+* `delete_user` - Delete a user
+* `get_user_status` - Get user status
 
-### Project Management (2 tools)
+### Project Management (9 tools)
 * `list_projects` - List all Rancher projects
-* `get_project` - Get details of a specific project (requires `name` parameter, optional `namespace`)
+* `get_project` - Get details of a specific project
+* `create_project` - Create a new project
+* `update_project` - Update/replace a project
+* `patch_project` - Partially update a project
+* `delete_project` - Delete a project
+* `get_project_status` - Get project status
 
-**Total: 6 tools** covering essential Rancher Manager operations.
+### Role Templates (9 tools)
+* `list_role_templates` - List all role templates
+* `get_role_template` - Get details of a role template
+* `create_role_template` - Create a new role template
+* `update_role_template` - Update/replace a role template
+* `patch_role_template` - Partially update a role template
+* `delete_role_template` - Delete a role template
+* `get_role_template_status` - Get role template status
+
+### Global Roles (9 tools)
+* `list_global_roles` - List all global roles
+* `get_global_role` - Get details of a global role
+* `create_global_role` - Create a new global role
+* `update_global_role` - Update/replace a global role
+* `patch_global_role` - Partially update a global role
+* `delete_global_role` - Delete a global role
+* `get_global_role_status` - Get global role status
+
+### Global Role Bindings (9 tools)
+* `list_global_role_bindings` - List all global role bindings
+* `get_global_role_binding` - Get details of a global role binding
+* `create_global_role_binding` - Create a new global role binding
+* `update_global_role_binding` - Update/replace a global role binding
+* `patch_global_role_binding` - Partially update a global role binding
+* `delete_global_role_binding` - Delete a global role binding
+* `get_global_role_binding_status` - Get global role binding status
+
+### Cluster Role Template Bindings (9 tools)
+* `list_cluster_role_template_bindings` - List all cluster role template bindings
+* `get_cluster_role_template_binding` - Get details of a cluster role template binding
+* `create_cluster_role_template_binding` - Create a new cluster role template binding
+* `update_cluster_role_template_binding` - Update/replace a cluster role template binding
+* `patch_cluster_role_template_binding` - Partially update a cluster role template binding
+* `delete_cluster_role_template_binding` - Delete a cluster role template binding
+* `get_cluster_role_template_binding_status` - Get cluster role template binding status
+
+### Project Role Template Bindings (9 tools)
+* `list_project_role_template_bindings` - List all project role template bindings
+* `get_project_role_template_binding` - Get details of a project role template binding
+* `create_project_role_template_binding` - Create a new project role template binding
+* `update_project_role_template_binding` - Update/replace a project role template binding
+* `patch_project_role_template_binding` - Partially update a project role template binding
+* `delete_project_role_template_binding` - Delete a project role template binding
+* `get_project_role_template_binding_status` - Get project role template binding status
+
+### Tokens (6 tools)
+* `list_tokens` - List all API tokens
+* `get_token` - Get details of a token
+* `create_token` - Create a new API token
+* `update_token` - Update/replace a token
+* `patch_token` - Partially update a token
+* `delete_token` - Delete an API token
+
+### Kubeconfigs (6 tools)
+* `list_kubeconfigs` - List all kubeconfigs
+* `get_kubeconfig` - Get details of a kubeconfig
+* `create_kubeconfig` - Create a new kubeconfig
+* `update_kubeconfig` - Update/replace a kubeconfig
+* `patch_kubeconfig` - Partially update a kubeconfig
+* `delete_kubeconfig` - Delete a kubeconfig
+
+### Audit Policies (9 tools)
+* `list_audit_policies` - List all audit policies
+* `get_audit_policy` - Get details of an audit policy
+* `create_audit_policy` - Create a new audit policy
+* `update_audit_policy` - Update/replace an audit policy
+* `patch_audit_policy` - Partially update an audit policy
+* `delete_audit_policy` - Delete an audit policy
+* `get_audit_policy_status` - Get audit policy status
+
+**Total: 75 tools** covering all Rancher Manager operations with full CRUD support.
+
+See [docs/TOOLS_REFERENCE.md](docs/TOOLS_REFERENCE.md) for complete tool documentation.
 
 ## Cursor IDE Integration
 
@@ -129,17 +222,25 @@ This server uses the Rancher Manager Kubernetes API:
 go build -o bin/rancher-mcp ./cmd
 ```
 
-### Test Token
+### Testing
+
+**Test all tools with existing resources:**
 ```bash
 source .env
-./test_token.sh
+./test_all_tools.sh
 ```
 
-### Test MCP Server
+**Test all tools with test objects (full CRUD workflow):**
 ```bash
 source .env
-./test_mcp.sh
+./test_all_tools_with_objects.sh
 ```
+
+This comprehensive test script:
+- Creates test objects
+- Tests all CRUD operations
+- Verifies status operations
+- Cleans up test objects
 
 ### Run Tests
 ```bash
@@ -154,14 +255,27 @@ rancher-manager-mcp/
 │   ├── main.go              # Main MCP server entry point
 │   └── verify-token/        # Token verification tool
 ├── internal/
+│   ├── client/
+│   │   └── rancher_client.go # Rancher API client
 │   ├── mcp/
 │   │   ├── server.go        # MCP protocol implementation
 │   │   └── types.go         # MCP protocol types
 │   └── server/
 │       ├── server.go        # Server wrapper and tool registration
-│       └── rancher_client.go # Rancher API client
+│       └── handlers/        # Tool handlers for all resources
+│           ├── clusters.go
+│           ├── users.go
+│           ├── projects.go
+│           ├── roles*.go
+│           └── ...
 ├── docs/                    # Documentation
+│   ├── TOOLS_REFERENCE.md   # Complete tool documentation
+│   ├── CURSOR_SETUP.md      # Cursor IDE setup guide
+│   └── api-reference/       # API reference documentation
+├── bin/                     # Build output (git-ignored)
 ├── .env.example            # Environment configuration template
+├── test_all_tools.sh        # Test script for all tools
+├── test_all_tools_with_objects.sh  # Full CRUD test script
 └── README.md               # This file
 ```
 

@@ -28,16 +28,24 @@ func NewServer(name, version string) *Server {
 }
 
 func (s *Server) RegisterTool(name, description string, handler ToolHandler) {
+	s.RegisterToolWithSchema(name, description, nil, handler)
+}
+
+func (s *Server) RegisterToolWithSchema(name, description string, inputSchema map[string]interface{}, handler ToolHandler) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	if inputSchema == nil {
+		inputSchema = map[string]interface{}{
+			"type":       "object",
+			"properties": make(map[string]interface{}),
+		}
+	}
 
 	s.tools[name] = Tool{
 		Name:        name,
 		Description: description,
-		InputSchema: map[string]interface{}{
-			"type":       "object",
-			"properties": make(map[string]interface{}),
-		},
+		InputSchema: inputSchema,
 	}
 	s.toolHandlers[name] = handler
 }
