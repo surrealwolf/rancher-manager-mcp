@@ -102,7 +102,7 @@ docker-login: ## Login to Harbor registry
 		echo "$(YELLOW)⚠ Error: HARBOR_USERNAME and HARBOR_PASSWORD must be set$(NC)"; \
 		exit 1; \
 	fi
-	@docker login $(HARBOR_REGISTRY) -u "$$HARBOR_USERNAME" -p "$$HARBOR_PASSWORD"
+	@echo "$$HARBOR_PASSWORD" | docker login $(HARBOR_REGISTRY) -u "$$HARBOR_USERNAME" --password-stdin
 	@echo "$(GREEN)✓ Logged into $(HARBOR_REGISTRY)$(NC)"
 
 docker-pull: ## Pull Docker image from Harbor
@@ -116,7 +116,7 @@ docker-push: ## Push Docker image to Harbor
 		echo "$(YELLOW)⚠ Error: HARBOR_USERNAME and HARBOR_PASSWORD must be set$(NC)"; \
 		exit 1; \
 	fi
-	@docker login $(HARBOR_REGISTRY) -u "$$HARBOR_USERNAME" -p "$$HARBOR_PASSWORD"
+	@echo "$$HARBOR_PASSWORD" | docker login $(HARBOR_REGISTRY) -u "$$HARBOR_USERNAME" --password-stdin
 	@docker push $(HARBOR_IMAGE):$(DOCKER_TAG)
 	@echo "$(GREEN)✓ Pushed $(HARBOR_IMAGE):$(DOCKER_TAG)$(NC)"
 
